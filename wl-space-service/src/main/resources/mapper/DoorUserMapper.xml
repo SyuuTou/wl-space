@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- recommended not modified but can be added ,Please contact liuhuiqing@jd.com for good advice.-->
+<mapper namespace="door_userMapper">
+	<resultMap id="DoorUserMap" type="wl.space.domain.entity.DoorUserEntity">
+	</resultMap>
+    
+    <sql id="select-all-column">
+		SELECT
+			id AS id,
+			login_name AS loginName,
+			user_name AS userName,
+			password AS password,
+			union_id AS unionId,
+			applet_open_id AS appletOpenId,
+			mp_open_id AS mpOpenId,
+			create_time AS createTime,
+			update_time AS updateTime,
+			create_user AS createUser,
+			update_user AS updateUser,
+			sys_version AS sysVersion,
+			yn as yn
+		FROM tb_door_user
+	</sql>
+	
+	<sql id="where-all-condition">
+		1=1
+		<if test="id != null">
+			and id = #{id,jdbcType=BIGINT}
+		</if>
+		<if test="loginName != null and loginName != ''">
+			and login_name = #{loginName,jdbcType=VARCHAR}
+		</if>
+		<if test="userName != null and userName != ''">
+			and user_name = #{userName,jdbcType=VARCHAR}
+		</if>
+		<if test="password != null and password != ''">
+			and password = #{password,jdbcType=VARCHAR}
+		</if>
+		<if test="unionId != null and unionId != ''">
+			and union_id = #{unionId,jdbcType=VARCHAR}
+		</if>
+		<if test="appletOpenId != null and appletOpenId != ''">
+			and applet_open_id = #{appletOpenId,jdbcType=VARCHAR}
+		</if>
+		<if test="mpOpenId != null and mpOpenId != ''">
+			and mp_open_id = #{mpOpenId,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null">
+			and create_time = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+			and update_time = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createUser != null and createUser != ''">
+			and create_user = #{createUser,jdbcType=VARCHAR}
+		</if>
+		<if test="updateUser != null and updateUser != ''">
+			and update_user = #{updateUser,jdbcType=VARCHAR}
+		</if>
+		<if test="sysVersion != null">
+			and sys_version = #{sysVersion,jdbcType=INTEGER}
+		</if>
+		<if test="yn != null">
+			and yn = #{yn,jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="selectDoorUser" parameterType="wl.space.domain.criteria.DoorUserCriteria" resultMap="DoorUserMap">
+		<include refid="select-all-column"/>
+		<where>
+		<include refid="where-all-condition"/>
+		<include refid="commonRoadMapper.sortSql"/>
+		<include refid="commonRoadMapper.pagingLimit"/>
+		</where>
+	</select>
+	
+	<select id="selectOneDoorUser" parameterType="java.lang.Long" resultMap="DoorUserMap">
+		<include refid="select-all-column"/>
+		WHERE
+		id = #{id,jdbcType=BIGINT}
+	</select>
+	
+	<select id="countDoorUser" parameterType="wl.space.domain.criteria.DoorUserCriteria" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM tb_door_user
+		<where>
+		<include refid="where-all-condition"/>
+		</where>
+	</select>
+
+</mapper>
